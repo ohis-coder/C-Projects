@@ -1,0 +1,13 @@
+Started coding with C cause i really don’t feel complete without understanding the fundamentals of programming, so first i got a copy of the “developer bible” no not the DDIA by O’reilly (i already have that) but instead i got “ The C Programming language K&R” 
+
+My Progress thus far
+[x] Hello world: Basic program you might think but i learnt that we must “import” (don’t mind my high level language) the standard input and output library, also that main () {} is the main function that must encapsulate everything, also learnt that C is so close to the metal, so we even have to include \n to tell the compiler to put the input on a newline and we’d like to return 0
+
+[x] Temperature Conversion: With this project i learnt alot, i learnt declaring types for a variable then placing a value into the variable then working with said var. I also learnt that C is very dumb and in essence bitchy, because of Integer Truncation. Can you imagine this, 5/9 in C is 0 because you declared the number as whole, WHO DOES THAT? I guess C, so we have to be careful with types, use 5.0/9.0 hold the result in a float var, i also learnt \t  for tab and that we use % to hold space for variables and the % must hold a type e.g %f for float, %d for decimal integer (base-10), and we can adjust the float to 1dp by %.1f or 3dp with %.3f and we can add width i.e character size like 5 character is %5f and to 3dp will be %5.3f. I also did the solulu in a for loop w/ something that looks like the original list comprehension, we just set all the conditions in the for loop. Another i learnt is the 3 ways to create a var:
+i. #define VARNAME char - I really love this one here, it just scans the code for anywhere VARNAME is and replaces it with char on compile time, debugging might be hard but that variable takes 0 RAM in memory on runtime and can’t be edited. PS; no semi-colon needed
+
+ii. int variable = int; - The normal boring variable way, not shiny but the variable can be updated in the program on execution
+
+iii. const int variable = int; - Hybrid, it can’t be edited in the program but takes RAM, so it is Read Only Access
+
+[x] Echo/Mirror: This one was niceee, i got introduced to getchar() and putchar(), we use a while loop, and we create a var that holds the char then as long as that char is not EOF which is a special char, we putchar(char) is not EOF which is a special character, we putchar(char) therefore, we print char… EOF is ctrl+D on mac and ctrl+Z on windows. Then i did a variant whereby we just increase the count in a var as long as the getchar is not EOF meaning, count the words, cool stuff.
