@@ -1,0 +1,50 @@
+# Epoll Server: My Way
+
+This is a high-performance, asynchronous, event-driven TCP server built from scratch in C. Instead of using heavy multi-threading frameworks, it interfaces directly with the operating system kernel using an $O(1)$ event-loop mechanism.
+
+---
+
+## The Mental Model (How I See It)
+
+### Phase 1: Setting up the Gate
+We create the socket template and set it for reuse. We bind it to a port using a precompiled `sock_address` struct where we configure the IP family and port. Next, we cast that struct directly onto the memory address of the socket. We tell the socket to start listening, and crucially, we set it to **Non-Blocking mode**. 
+
+If this were a normal, lazy socket, that would be the end of the story—we would just call blocking `accept()`, `recv()`, and `send()` routines. But since we want hyper-efficiency, we move to Phase 2.
+
+### Phase 2: The Watchtower & The Epoll Gods
+We create an `epoll` channel/socket instance, which gets its own unique tracking index number from the kernel (like ticket number 1 or 2). 
+
+We call a precompiled `epoll_event` struct and configure its parameters to use `EPOLLIN | EPOLLET` (which are like microscopic bit-switches that listen for changes in network states). We assign the descriptor we want to monitor into `data.fd`. If the master door socket was ticket 1 and the epoll socket was ticket 2, ticket 2 is now standing right in front of ticket 1. Finally, we hand the configuration over to the kernel and send the agreement to the epoll gods lmao.
+
+### Phase 3: The Event Loop & The Receptionist
+We allocate an array pool in memory to hold the specific batch of active sockets that are currently processing data. Then, we kick off the infinite work loop using a `while(1)`. 
+
+Inside the loop, `epoll_wait()` forces our application thread to sleep gracefully at 0% CPU usage until the OS kernel wakes it up with a specific number of active sockets packed into our event array. We loop through them. If the active ticket matches our Master Door Socket from Phase 1, the code acts like a Receptionist: it runs `accept()` on the new client connection, marks their private pipe as non-blocking, and registers them directly into the global epoll watch list.
+
+### Phase 3.5: The Protocol Reader & The Byte Stream
+If the active socket is *not* a brand-new user hitting the door, it means an existing connected user is actively sending data. We run a bitwise check to see if the socket has the `EPOLLIN` flag active (meaning: inbound packets have successfully landed on the network card). 
+
+We instantiate a local buffer structured precisely to the payload size we expect (since I design the data layout myself). We trigger `recv()` and capture the payload into `ssize_t bytes_read`, which tracks the exact integer count of raw network bytes delivered to our user-space memory. From there, we hand the raw memory chunk to our custom protocol reader for execution.
+
+---
+
+## Environmental Execution (How to Run It)
+
+Because I compiled this on a 2015 Intel MacBook Pro running macOS Sequoia via OpenCore Legacy Patcher, native Linux `epoll` is emulated using the `epoll-shim` translation layer.
+
+### Compilation
+Use `pkg-config` to automatically map the Homebrew library and include header paths on macOS:
+```bash
+gcc main.c $(pkg-config --cflags --libs epoll-shim) -o main
+```
+
+### Execution
+Spin up the backend event engine:
+```bash
+./main
+```
+
+In a separate terminal window, simulate an app client connection via Netcat:
+```bash
+nc localhost 8080
+```
