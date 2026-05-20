@@ -11,14 +11,14 @@ int main () {
 	
 	while ((c = getchar()) != EOF) {
 		if (c == ' ' || c == '\t' || c == '\n') {
-			state = OUT; 
-		} else {
-			if (state == OUT) {
+			if (state == IN) {
 				printf("\n");
-				state = IN;
+				state = OUT;
 			}
+		} else {
+			state = IN;
+			putchar(c);
 		}
-		putchar(c);
 	} 
 		
 return 0;
