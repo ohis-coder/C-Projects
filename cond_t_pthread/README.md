@@ -19,7 +19,7 @@ Implements a **Producer-Consumer** pattern. Threads communicate via a "Whistle" 
 ## Systems Architecture Notes
 - **Spurious Wakeup Protection**: All condition waits are wrapped in `while` loops to ensure the predicate is re-verified upon wakeup.
 - **Atomicity**: Guarantees that state transitions (`0 -> 99`) are indivisible.
-- **Efficiency**: Uses `usleep` and signaling to minimize CPU churn during wait states.
+
 
 ## Compilation
 ```bash
