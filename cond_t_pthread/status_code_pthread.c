@@ -34,7 +34,6 @@ void *reader_logger(void *arg) {
     }
     pthread_cond_signal(&whistle);
     pthread_mutex_unlock(&lock);
-    usleep(10000);
   }
   return NULL;
 }
