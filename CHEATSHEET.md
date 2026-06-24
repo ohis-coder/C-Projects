@@ -30,3 +30,8 @@ the UI. * One-word Mac Terminal shortcut to connect: `budgie`
 
 ## 4. Daily Safe Shutdown
 * Run inside Linux SSH before closing your laptop: `sudo shutdown -h now`
+
+### Safe copy files/folders into a device you SSH into (Run from Host/Mac terminal)
+* `scp -P [PORT] -r /Full/Path/To/Source/Folder username@destination_ip:~/`
+* Example: `scp -P 2222 -r ~/Desktop/C_projects ohimai@127.0.0.1:~/`
+
