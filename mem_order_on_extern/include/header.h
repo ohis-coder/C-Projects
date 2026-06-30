@@ -1,12 +1,14 @@
 #ifndef HEADER_H
 #define HEADER_H
 
-#include <stdio.h>
-#include <stdatomic.h>
 #include <pthread.h>
+#include <stdatomic.h>
+#include <stdio.h>
 
-extern int data;
+extern atomic_int data;
+// pthread_mutex_t lock;
 
-int dumb_increase_one(data);
+void *dumb_increase_one(void *arg);
+int run();
 
 #endif

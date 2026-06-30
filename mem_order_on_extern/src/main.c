@@ -3,8 +3,7 @@
 
 // you know the drill 0 )
 int main() {
-	int data = 0;
-	run();
-	printf(data);
-	return NULL;
+  run();
+  printf("The extern data is now: %d", data);
+  return 0;
 }
