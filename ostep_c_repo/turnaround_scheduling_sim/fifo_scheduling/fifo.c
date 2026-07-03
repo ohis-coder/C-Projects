@@ -67,16 +67,20 @@ int get_total_job_count() {
 }
 
 int main() {
-  int i, j;
+  int i, j, k, l;
   int j_c = get_total_job_count();
 
   for (i = 0; i < j_c; i++) {
     j = get_job_completion_time();
 
+    k = j;
     if (j == FAILED) {
       continue;
     }
-    sleep(j);
+    for (l = 0; k >= 0; k--) {
+      printf("working.. %d second(s) left\n", k);
+      sleep(1);
+    }
 
     printf("Task Completed\n\n");
   }
