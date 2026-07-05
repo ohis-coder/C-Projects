@@ -11,6 +11,7 @@
     x = y;                                                                     \
     y = temp;                                                                  \
   } while (0)
+
 // this key is faulty on my keyboard so yea: 0 )
 
 typedef struct {
@@ -94,8 +95,8 @@ void sort_array_descending(job_profile arr[], int size) {
   int start, scan;
 
   for (start = 0; start < size - 1; start++) {
-    for (scan = 0; scan < size - 1; scan++) {
-      if (arr[scan].completion_time < arr[start].completion_time) {
+    for (scan = start + 1; scan < size - 1; scan++) {
+      if (arr[scan].completion_time > arr[start].completion_time) {
         // arr[scan], arr[start] = arr[start], arr[scan]; lmao i thought this
         // was python leetcode smh
         SWAP(job_profile, arr[start], arr[scan]);
@@ -106,7 +107,7 @@ void sort_array_descending(job_profile arr[], int size) {
 
 int main() {
   job_profile arr[MAXJOBS];
-  int i, j;
+  int i, j, k, l;
   int jc = get_total_job_count();
 
   for (i = 0; i < jc; i++) {
@@ -117,9 +118,20 @@ int main() {
 
   sort_array_descending(arr, jc);
 
-  for (i = 0; i < jc; i++) {
-    printf("\nJob name: %s", arr[i].job);
-    printf("Job Completion Time: %d second(s)\n", arr[i].completion_time);
+  while (jc > 0) {
+    job_profile shortest_job = arr[jc - 1];
+    jc--;
+    for (k = shortest_job.completion_time; k >= 0; k--) {
+      printf("working on %s... %d second(s) until completion\n",
+             shortest_job.job, k);
+      sleep(1);
+    }
   }
+  /*
+  for (k = 0; k < jc; k++) {
+    printf("\nJob name: %s", arr[k].job);
+    printf("Job Completion Time: %d second(s)\n", arr[k].completion_time);
+  }
+  */
   return 0;
 }
