@@ -4,6 +4,13 @@
 #include <unistd.h>
 
 #define FAILED -1
+#define MAXJOBS 9
+#define SWAP(type, x, y)                                                       \
+  do {                                                                         \
+    type temp = x;                                                             \
+    x = y;                                                                     \
+    y = temp;                                                                  \
+  } while (0)
 // this key is faulty on my keyboard so yea: 0 )
 
 typedef struct {
@@ -30,7 +37,6 @@ static int getnum() {
   }
 
   if (c == EOF || !isdigit(c) || c > '9') {
-    printf("\nInput a valid number between 0 - 9 dawg\n");
     return -1;
   }
   return c - '0';
@@ -43,6 +49,7 @@ job_profile get_job_and_completion_time() {
   printf("\nWhat is the name of this job?(< 8 chars bro)\n");
 
   if (fgets(buffer, sizeof(buffer), stdin) == NULL) {
+    buffer[strcspn(buffer, "\n")] = '\0';
     job.completion_time = FAILED;
     strncpy(job.job, buffer, sizeof(job.job) - 1);
 
@@ -83,16 +90,36 @@ int get_total_job_count() {
   return job_count;
 }
 
+void sort_array_descending(job_profile arr[], int size) {
+  int start, scan;
+
+  for (start = 0; start < size - 1; start++) {
+    for (scan = 0; scan < size - 1; scan++) {
+      if (arr[scan].completion_time < arr[start].completion_time) {
+        // arr[scan], arr[start] = arr[start], arr[scan]; lmao i thought this
+        // was python leetcode smh
+        SWAP(job_profile, arr[start], arr[scan]);
+      }
+    }
+  }
+}
+
 int main() {
+  job_profile arr[MAXJOBS];
   int i, j;
   int jc = get_total_job_count();
 
   for (i = 0; i < jc; i++) {
     job_profile job = get_job_and_completion_time();
 
-    printf("Job name: %s", job.job);
-    printf("Job Completion Time: %d second(s)\n", job.completion_time);
+    arr[i] = job;
   }
 
+  sort_array_descending(arr, jc);
+
+  for (i = 0; i < jc; i++) {
+    printf("\nJob name: %s", arr[i].job);
+    printf("Job Completion Time: %d second(s)\n", arr[i].completion_time);
+  }
   return 0;
 }
