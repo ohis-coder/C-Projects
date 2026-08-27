@@ -11,3 +11,9 @@ ii. int variable = int; - The normal boring variable way, not shiny but the vari
 iii. const int variable = int; - Hybrid, it can’t be edited in the program but takes RAM, so it is Read Only Access
 
 [x] Echo/Mirror: This one was niceee, i got introduced to getchar() and putchar(), we use a while loop, and we create a var that holds the char then as long as that char is not EOF which is a special char, we putchar(char) is not EOF which is a special character, we putchar(char) therefore, we print char… EOF is ctrl+D on mac and ctrl+Z on windows. Then i did a variant whereby we just increase the count in a var as long as the getchar is not EOF meaning, count the words, cool stuff.
+
+
+yea i kno my ass was not keeping up w this documenting the journey on github readme bs.
+find the real documentation on linkedin and medium
+[x] www.linkedin.com/in/ohimai
+[x] https://medium.com/@emodexohimai
