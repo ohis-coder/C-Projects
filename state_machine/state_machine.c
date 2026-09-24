@@ -36,7 +36,7 @@ void (*state_table[NUM_STATES])() = {
     [STATE_SHUTDOWN] = NULL // Handled explicitly
 };
 
-// 🕵️‍♂️ THE GENIUS WATCHER THREAD
+// THE GENIUS WATCHER THREAD
 void *watcher_thread_func(void *arg) {
   pthread_mutex_lock(&state_mutex);
 
